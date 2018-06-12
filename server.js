@@ -1,9 +1,12 @@
-// modules
+// node modules
 const http = require("http");
 const express = require("express");
 const fs = require("fs");
 const url = require("url");
 const WebSocket = require("ws");
+
+// server modules
+const ws_handler = require("./server_modules/ws_handler/ws_handler.js");
 
 // server constants
 const hostname = "localhost";
@@ -13,9 +16,16 @@ const root = "public";
 const app = express();
 
 // websocket server
+var data = {
+    users: []
+};
 const ws_server = new WebSocket.Server({
     port: ws_port
 });
+ws_handler.handle_ws_server(data, ws_server);
+setInterval(() => {
+    console.log(ws_server.clients.size);
+}, 1000);
 
 // router
 app.get("*", (request, response) => {

@@ -4,12 +4,14 @@
     "description": "A websocket demo.",
     "main": "server.js",
     "scripts": {
-        "start": "nodemon -q server.js"
+        "start": "nodemon -q server.js --exec babel-node -e js"
     },
     "author": "PierreTurnbull",
     "license": "ISC",
     "devDependencies": {
         "babel-cli": "^6.26.0",
+        "babel-preset-env": "^1.7.0",
+        "babel-preset-stage-0": "^6.24.1",
         "nodemon": "^1.17.5"
     },
     "dependencies": {
