@@ -1,9 +1,11 @@
+// create a new user
 export const create_user = (data, uid) => {
     data.users.push({
         uid: uid
     });
 };
 
+// remove an existing user
 export const remove_user = async (data, value) => {
     const index = data.users.findIndex((user) => (user.uid === value));
     if (index === -1) {
