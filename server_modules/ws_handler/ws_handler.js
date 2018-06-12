@@ -1,35 +1,30 @@
+const ws_heartbeat  = require("./ws_heartbeat");
+const ws_uid        = require("./ws_uid");
+const ws_data       = require("./ws_data");
+
 export const handle_ws_server = (data, ws_server) => {
     ws_server.on("connection", async (socket) => {
-        await connect_to_socket(data, socket);
-        await create_new_player();
+        socket.uid = await ws_uid.get_new_uid(data.users);
+        await handle_socket_interactions(data, socket);
+        await ws_data.create_user(data, socket.uid);
     });
-    const heartbeat_interval = setInterval(() => (ping_all(ws_server)), 1000);
-};
-
-export const ping_all = (ws_server) => {
-    ws_server.clients.forEach((socket) => {
-        if (socket.is_alive === false) {
-            return socket.terminate();
+    const heartbeat_interval = setInterval(() => {
+        let dead_socket_uid = ws_heartbeat.ping_all(ws_server);
+        if (dead_socket_uid !== null) {
+            ws_data.remove_user(data, dead_socket_uid);
         }
-        socket.is_alive = false;
-        socket.ping(() => {});
-    })
+    }, 1000);
 };
 
-export const connect_to_socket = (data, socket) => {
-    // data.users.push("user");
-    // data.users.forEach(() => (console.log("user")));
+export const handle_socket_interactions = (data, socket) => {
     socket.is_alive = true;
-    socket.on("pong", () => (heartbeat(socket)));
+    socket.on("pong", () => (ws_heartbeat.heartbeat(socket)));
     socket.on("message", (message) => {
         console.log(message);
     });
+    socket.on("close", (() => (handle_socket_closure(data, socket))));
 };
 
-export const heartbeat = (socket) => {
-    socket.is_alive = true;
-};
-
-export const create_new_player = () => {
-    console.log("weee");
+export const handle_socket_closure = (data, socket) => {
+    ws_data.remove_user(data, socket.uid);
 };
