@@ -4,3 +4,6 @@ console.log(socket);
 socket.onopen = () => {
     socket.send("new co");
 };
+socket.onmessage = (message) => {
+	console.log(JSON.parse(message.data));
+};

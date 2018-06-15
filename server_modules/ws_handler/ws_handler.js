@@ -1,11 +1,13 @@
-const ws_heartbeat  = require("./ws_heartbeat");
-const ws_uid        = require("./ws_uid");
-const ws_data       = require("./ws_data");
+const ws_communication 	= require("./ws_communication");
+const ws_data       	= require("./ws_data");
+const ws_heartbeat  	= require("./ws_heartbeat");
+const ws_uid        	= require("./ws_uid");
 
 // handle sockets on the websocket server
 export const handle_ws_server = (data, ws_server) => {
     ws_server.on("connection", (socket) => {
 		handle_socket(data, ws_server, socket);
+		ws_communication.broadcast_app_state(data, ws_server);
 	});
     const heartbeat_interval = ws_heartbeat.start_heartbeat(ws_server);
 };
