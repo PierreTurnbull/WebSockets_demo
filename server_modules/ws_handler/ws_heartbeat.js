@@ -1,3 +1,4 @@
+// start a heartbeat interval on the websocket server 'ws_server'
 export const start_heartbeat = (ws_server) => {
 	return setInterval(
         () => (check_socket_all(ws_server)),
@@ -21,7 +22,7 @@ export const check_socket = (socket) => {
     }
 };
 
-// when pong event fired, keep the socket alive
+// when a pong event was fired, keep the socket alive
 export const heartbeat = (socket) => {
     socket.is_alive = true;
 };
