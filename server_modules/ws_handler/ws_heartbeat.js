@@ -1,3 +1,10 @@
+export const start_heartbeat = (ws_server) => {
+	return setInterval(
+        () => (check_socket_all(ws_server)),
+        1000
+    );
+};
+
 // check the state of every socket
 export const check_socket_all = (ws_server) => {
     ws_server.clients.forEach((socket) => {check_socket(socket)})
