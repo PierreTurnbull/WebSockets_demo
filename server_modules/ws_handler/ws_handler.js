@@ -5,16 +5,16 @@ const ws_uid        	= require("./ws_uid");
 
 // handle sockets on the websocket server
 export const handle_ws_server = (data, ws_server) => {
-    ws_server.on("connection", (socket) => {
-		handle_socket(data, ws_server, socket);
+    ws_server.on("connection", async (socket) => {
+		await handle_socket(data, ws_server, socket);
 		ws_communication.broadcast_app_state(data, ws_server);
 	});
     const heartbeat_interval = ws_heartbeat.start_heartbeat(ws_server);
 };
 
 // handle a socket
-export const handle_socket = (data, ws_server, socket) => {
-    socket.uid = ws_uid.get_new_uid(data.users);
+export const handle_socket = async (data, ws_server, socket) => {
+    socket.uid = await ws_uid.get_new_uid(data.users);
     handle_socket_interactions(data, socket);
     ws_data.create_user(data, socket.uid);
 };

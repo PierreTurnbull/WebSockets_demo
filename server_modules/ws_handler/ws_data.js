@@ -1,15 +1,28 @@
 // create a new user
 export const create_user = (data, uid) => {
-	const random_color = "#" +
+	var user_style = create_user_style();
+    data.users.push({
+        uid: uid,
+		style: user_style
+    });
+};
+
+// create_user_style
+export const create_user_style = () => {
+	var random_color = "#" +
 		Math.floor(Math.random() * 16).toString(16) +
 		Math.floor(Math.random() * 16).toString(16) +
 		Math.floor(Math.random() * 16).toString(16);
-    data.users.push({
-        uid: uid,
-		style: {
-			backgroundColor: random_color
-		}
-    });
+	var random_top = Math.floor(Math.random() * 500) + "px";
+	var random_left = Math.floor(Math.random() * 500) + "px";
+	return {
+		backgroundColor: random_color,
+		position: "absolute",
+		top: random_top,
+		left: random_left,
+		width: "38px",
+		height: "38px"
+	};
 };
 
 // remove an existing user
